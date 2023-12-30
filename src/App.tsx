@@ -1,7 +1,13 @@
+import Navigation from './components/Navigation';
+import TotalBalance from './components/TotalBalance';
+import TransactionList from './components/TransactionList';
+
 function App() {
   return (
     <div>
-      Test
+      <Navigation />
+      <TotalBalance />
+      <TransactionList/>
     </div>
   );
 }
