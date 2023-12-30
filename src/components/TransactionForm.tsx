@@ -29,7 +29,6 @@ const TransactionForm: React.FC = () => {
     event.preventDefault();
 
     const transaction = {
-      id: 'someId',
       type,
       category,
       amount,
@@ -38,8 +37,10 @@ const TransactionForm: React.FC = () => {
 
     try {
       const response = await axiosApi.post('/transactions.json', transaction);
+      const newTransaction = { ...transaction, id: response.data.name };
       console.log('Response:', response.data);
-      dispatch(addTransaction(transaction));
+
+      dispatch(addTransaction(newTransaction));
       setType('income');
       setCategory('');
       setAmount(0);
@@ -49,6 +50,7 @@ const TransactionForm: React.FC = () => {
       console.error('Error:', error);
     }
   };
+
 
   const handleCancel = () => {
     navigate('/');
