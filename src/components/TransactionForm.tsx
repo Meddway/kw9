@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
-import {useDispatch} from 'react-redux';
-import {addTransaction} from "../store/transactionSlice";
-import axiosApi from "../axiosApi";
-import {useNavigate} from "react-router-dom";
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addTransaction } from '../store/transactionSlice';
+import axiosApi from '../axiosApi';
+import { useNavigate } from 'react-router-dom';
 
 const TransactionForm: React.FC = () => {
   const [type, setType] = useState<'income' | 'expense'>('income');
@@ -43,6 +43,8 @@ const TransactionForm: React.FC = () => {
       setType('income');
       setCategory('');
       setAmount(0);
+
+      navigate('/');
     } catch (error) {
       console.error('Error:', error);
     }
@@ -86,7 +88,6 @@ const TransactionForm: React.FC = () => {
         </div>
         <button type="submit" className="btn btn-primary mt-3">Submit</button>
         <button type="button" className="btn btn-danger mt-3 ms-2" onClick={handleCancel}>Cancel</button>
-
       </form>
     </div>
   );
