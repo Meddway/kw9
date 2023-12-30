@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TotalBalance:React.FC = () => {
+const TotalBalance: React.FC = () => {
   const totalBalance = 0;
 
   return (
