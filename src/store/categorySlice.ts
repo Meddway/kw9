@@ -1,20 +1,14 @@
-import {createSlice, PayloadAction, createAsyncThunk} from '@reduxjs/toolkit';
-import axiosApi from '../axiosApi';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export interface Category {
+interface Category {
   id: string;
   type: 'income' | 'expense';
   name: string;
 }
 
-export interface CategoryState {
+interface CategoryState {
   categories: Category[];
 }
-
-export const fetchCategories = createAsyncThunk('category/fetchCategories', async () => {
-  const response = await axiosApi.get('/categories.json');
-  return response.data as Category[];
-});
 
 const initialState: CategoryState = {
   categories: [],
@@ -30,14 +24,12 @@ const categorySlice = createSlice({
     removeCategory: (state, action: PayloadAction<string>) => {
       state.categories = state.categories.filter((category) => category.id !== action.payload);
     },
-  },
-  extraReducers: (builder) => {
-    builder.addCase(fetchCategories.fulfilled, (state, action) => {
+    setCategories: (state, action: PayloadAction<Category[]>) => {
       state.categories = action.payload;
-    });
+    },
   },
 });
 
-export const {addCategory, removeCategory} = categorySlice.actions;
+export const { addCategory, removeCategory, setCategories } = categorySlice.actions;
 
 export default categorySlice.reducer;

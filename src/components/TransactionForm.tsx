@@ -1,8 +1,15 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { addTransaction } from '../store/transactionSlice';
 import axiosApi from '../axiosApi';
 import { useNavigate } from 'react-router-dom';
+import {setCategories} from "../store/categorySlice";
+
+interface Category {
+  id: string;
+  name: string;
+  type: 'income' | 'expense';
+}
 
 const TransactionForm: React.FC = () => {
   const [type, setType] = useState<'income' | 'expense'>('income');
@@ -11,7 +18,22 @@ const TransactionForm: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const categories = ['Food', 'Salary', 'Drink'];
+  const categories: Category[] = useSelector((state: { category: { categories: Category[] } }) => state.category.categories);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axiosApi.get('/categories.json');
+        const data = response.data;
+        const categoriesArray: Category[] = Object.keys(data).map((key) => ({ id: key, ...data[key] }));
+        dispatch(setCategories(categoriesArray));
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
+    void fetchCategories();
+  }, [dispatch]);
 
   const handleTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setType(event.target.value as 'income' | 'expense');
@@ -38,8 +60,6 @@ const TransactionForm: React.FC = () => {
     try {
       const response = await axiosApi.post('/transactions.json', transaction);
       const newTransaction = { ...transaction, id: response.data.name };
-      console.log('Response:', response.data);
-
       dispatch(addTransaction(newTransaction));
       setType('income');
       setCategory('');
@@ -50,7 +70,6 @@ const TransactionForm: React.FC = () => {
       console.error('Error:', error);
     }
   };
-
 
   const handleCancel = () => {
     navigate('/');
@@ -72,8 +91,8 @@ const TransactionForm: React.FC = () => {
           <select className="form-control" id="category" value={category} onChange={handleCategoryChange}>
             <option value="" disabled>Select a category</option>
             {categories.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
+              <option key={cat.id} value={cat.id}>
+                {cat.name}
               </option>
             ))}
           </select>
@@ -88,8 +107,12 @@ const TransactionForm: React.FC = () => {
             onChange={handleAmountChange}
           />
         </div>
-        <button type="submit" className="btn btn-primary mt-3">Submit</button>
-        <button type="button" className="btn btn-danger mt-3 ms-2" onClick={handleCancel}>Cancel</button>
+        <button type="submit" className="btn btn-primary mt-3">
+          Submit
+        </button>
+        <button type="button" className="btn btn-danger mt-3 ms-2" onClick={handleCancel}>
+          Cancel
+        </button>
       </form>
     </div>
   );
