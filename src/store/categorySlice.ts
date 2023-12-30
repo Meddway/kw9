@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import {createSlice, PayloadAction, createAsyncThunk} from '@reduxjs/toolkit';
 import axiosApi from '../axiosApi';
 
 export interface Category {
@@ -38,6 +38,6 @@ const categorySlice = createSlice({
   },
 });
 
-export const { addCategory, removeCategory } = categorySlice.actions;
+export const {addCategory, removeCategory} = categorySlice.actions;
 
 export default categorySlice.reducer;

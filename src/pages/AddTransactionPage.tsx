@@ -1,9 +1,11 @@
 import React from 'react';
+import TransactionForm from "../components/TransactionForm";
+
 
 const AddTransactionPage: React.FC = () => {
   return (
     <div>
-      <h2>Add Transaction Page</h2>
+      <TransactionForm/>
     </div>
   );
 };

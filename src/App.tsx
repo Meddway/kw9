@@ -8,16 +8,17 @@ import CategoriesPage from "./pages/CategoriesPage";
 function App() {
   return (
     <div>
-      <Navigation />
-      <TotalBalance />
+      <Navigation/>
+      <TotalBalance/>
       <Routes>
         <Route>
-          <Route path="/" element={<TransactionList/>} />
-          <Route path="/categories" element={<CategoriesPage />} />
-          <Route path="/add-transaction-page" element={<AddTransactionPage />} />
+          <Route path="/" element={<TransactionList/>}/>
+          <Route path="/categories" element={<CategoriesPage/>}/>
+          <Route path="/add-transaction-page" element={<AddTransactionPage/>}/>
         </Route>
       </Routes>
     </div>
   );
 }
+
 export default App;

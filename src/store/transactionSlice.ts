@@ -1,21 +1,16 @@
-import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import axiosApi from '../axiosApi';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 export interface Transaction {
   id: string;
   category: string;
   amount: number;
   createdAt: string;
+  type: 'income' | 'expense';
 }
 
 export interface TransactionState {
   transactions: Transaction[];
 }
-
-export const fetchTransactions = createAsyncThunk('transaction/fetchTransactions', async () => {
-  const response = await axiosApi.get('/transactions.json');
-  return response.data as Transaction[];
-});
 
 const initialState: TransactionState = {
   transactions: [],
@@ -32,13 +27,8 @@ const transactionSlice = createSlice({
       state.transactions = state.transactions.filter((transaction) => transaction.id !== action.payload);
     },
   },
-  extraReducers: (builder) => {
-    builder.addCase(fetchTransactions.fulfilled, (state, action) => {
-      state.transactions = action.payload;
-    });
-  },
 });
 
-export const { addTransaction, removeTransaction } = transactionSlice.actions;
+export const {addTransaction, removeTransaction} = transactionSlice.actions;
 
 export default transactionSlice.reducer;
